@@ -77,7 +77,7 @@ radio = st.radio('Ag Barometer Index', ['Purdue/CME Ag Economy Barometer',
 bar_df = corr_df[radio].sort_values()
 st.bar_chart(data=bar_df)
 col1, col2 = st.columns([4, 1])
-col1.text('Data Sources: Perdue Ag Barometer and Yahoo Finance')
+col1.text('Data Sources: Purdue Ag Barometer and Yahoo Finance')
 col2.text('By Sam Kobrin')
 
 
