@@ -73,7 +73,7 @@ st.text("Ag Economy Indicators, by month")
 st.line_chart(data = display_data(norm), x= 'Date' , y = indicators)
 st.text("Ag Economy Indicator Data Table")
 st.dataframe(display_data(norm).set_index('Date'))
-st.subheader('Historically, Farmer Setiment Is Assocated with Key Agricultural Commodity Prices')
+st.subheader('Farmer Sentiment is Associated with Key Agricultural Commodity Prices')
 st.text('Correlation Between Ag Economy Barometer Indices and Key Ag Commodity Prices')
 radio = st.radio('Ag Barometer Index', ['Purdue/CME Ag Economy Barometer',
  'Index of Current Conditions',
