@@ -6,6 +6,7 @@ import streamlit as st
 import yfinance as yf
 from sklearn import preprocessing
 import numpy as np
+import requests
 st.title("American Agricultural Economy Barometer")
 st.subheader("Surveying the state of the agriculture industry on a monthly basis")
 st.caption("Data sources include Ag Economy Barometer Indices produced by Perdue Univeristy and key Agricultural input and output prices.")
@@ -38,9 +39,23 @@ data = data['Close'].rename(columns={"DC=F":"Milk Futures (DC-F)", "HE=F" :"Lean
                               "ZC=F":"Corn Futures,Dec-2022 (ZC=F)"})
 
 
-
+#### get drought data
+r = requests.get("https://usdmdataservices.unl.edu/api/USStatistics/GetDroughtSeverityStatisticsByArea?aoi=conus&startdate=1/1/2000&enddate=8/1/2022&statisticsType=1")
+json = r.json()
+drought = pd.DataFrame.from_dict(json)
+drought[['D0', 'D1', 'D2', 'D3','D4']] = drought[['D0', 'D1', 'D2', 'D3','D4']].applymap(lambda x: float(str.replace(x,',', '')))
+drought['Date'] = pd.to_datetime(drought['MapDate'])
+drought = drought.set_index('Date').resample("M").mean()
+drought = drought.reset_index()
+drought['Date'] = drought['Date'].apply(lambda x: x.replace(day=1))
+drought['Total CONUS Area in Drought (D1 - D4)'] = drought['D1'] + drought['D2'] + drought['D3'] + drought['D4']
+drought = drought.rename(columns = {'D0' : 'At Risk of Drought - D0',
+ 'D1':' Moderate Drought - D1',
+  'D2': 'Severe Drought - D2',
+   'D3': 'Extreme Drought - D3',
+    'D4':'Exceptional Drought - D4'})
 #merge dataframes
-total_data = data.reset_index().merge(df, how='left')
+total_data = data.reset_index().merge(df, how='left').merge(drought, how='left')
 # normalize data
 #create scaled dataframe
 total_data = total_data.set_index('Date')
