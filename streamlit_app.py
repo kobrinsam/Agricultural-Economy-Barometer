@@ -66,6 +66,12 @@ barometer_list = ['Purdue/CME Ag Economy Barometer',
  'Index of Current Conditions',
  'Index of Future Expectations',
  'Farm Capital Investment Index']
+drought_list =  ['CONUS Area at Risk of Drought - D0',
+'CONUS Area in Moderate Drought - D1',
+  'CONUS Area in Severe Drought - D2',
+   'CONUS Area in Extreme Drought - D3',
+    'CONUS Area in Exceptional Drought - D4',
+    'CONUS Area in Drought (D1 - D4)']
 ####
 # correlations df
 corr_df = scaled_df[scaled_df['Date']>'2010-10-01'].rename(columns={"DC=F":"Milk Futures (DC-F)", "HE=F" :"Lean Hog Futures (HE=F)",
@@ -74,6 +80,11 @@ corr_df = scaled_df[scaled_df['Date']>'2010-10-01'].rename(columns={"DC=F":"Milk
                               "ZS=F":"Soybean Futures,Nov-2022 (ZS=F)",
                               "NG=F": "Natural Gas Oct 22 (NG=F)",
                               "ZC=F":"Corn Futures,Dec-2022 (ZC=F)"}).corr().drop(barometer_list, axis=0)
+
+## drought df
+drought_df = corr_df['CONUS Area in Drought (D1 - D4)'].drop(drought_list, axis=0)
+
+
 ###functions
 def display_data(norm):
     if norm:
@@ -96,8 +107,11 @@ radio = st.radio('Ag Barometer Index', ['Purdue/CME Ag Economy Barometer',
  'Farm Capital Investment Index'], index=0, horizontal=True)
 bar_df = corr_df[radio].sort_values()
 st.bar_chart(data=bar_df)
+st.subheader('There is a Strong Relationship Between Drought and Ag Commodity Futures Prices')
+st.text('Correlation Between CONUS Area in drought and Key Ag Commodity Prices')
+st.bar_chart(data= drought_df.sort_values())
 col1, col2 = st.columns([4, 1])
-col1.text('Data Sources: Purdue Ag Barometer and Yahoo Finance')
-col2.text('By Sam Kobrin')
+st.text('Data Sources: Purdue Ag Barometer, The U.S. Drought Monitor, and Yahoo Finance')
+st.text('By Sam Kobrin')
 
 
