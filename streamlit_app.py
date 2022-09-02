@@ -48,12 +48,12 @@ drought['Date'] = pd.to_datetime(drought['MapDate'])
 drought = drought.set_index('Date').resample("M").mean()
 drought = drought.reset_index()
 drought['Date'] = drought['Date'].apply(lambda x: x.replace(day=1))
-drought['Total CONUS Area in Drought (D1 - D4)'] = drought['D1'] + drought['D2'] + drought['D3'] + drought['D4']
-drought = drought.rename(columns = {'D0' : 'At Risk of Drought - D0',
- 'D1':' Moderate Drought - D1',
-  'D2': 'Severe Drought - D2',
-   'D3': 'Extreme Drought - D3',
-    'D4':'Exceptional Drought - D4'})
+drought['CONUS Area in Drought (D1 - D4)'] = drought['D1'] + drought['D2'] + drought['D3'] + drought['D4']
+drought = drought.rename(columns = {'D0' : 'CONUS Area at Risk of Drought - D0',
+ 'D1':'CONUS Area in Moderate Drought - D1',
+  'D2': 'CONUS Area in Severe Drought - D2',
+   'D3': 'CONUS Area in Extreme Drought - D3',
+    'D4':'CONUS Area in Exceptional Drought - D4'})
 #merge dataframes
 total_data = data.reset_index().merge(df, how='left').merge(drought, how='left')
 # normalize data
