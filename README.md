@@ -1,6 +1,3 @@
-# Welcome to Streamlit!
+# Agricultural Economy Barometer
 
-Edit `/streamlit_app.py` to customize this app to your heart's desire :heart:
-
-If you have any questions, checkout our [documentation](https://docs.streamlit.io) and [community
-forums](https://discuss.streamlit.io).
+This streamlit dashboared tracks KPIS in the agricultural sector, such as spot corn prices, soybean prices, urea prices, U.S. drought indexs and farmer sentiment.
